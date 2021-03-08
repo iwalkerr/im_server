@@ -1,6 +1,6 @@
 # 基于websocket单台机器支持百万连接分布式聊天(IM)系统
 
-
+引用项目地址: https://github.com/link1st/gowebsocket
 
 本文将介绍如何实现一个基于websocket分布式聊天(IM)系统。
 

@@ -42,6 +42,5 @@ func RandGenImage() string {
 	numberString := strconv.Itoa(number)
 
 	httpUrl := viper.GetString("app.httpUrl")
-	staticPrefix := viper.GetString("app.staticPrefix")
-	return fmt.Sprintf(httpUrl+staticPrefix+"/assets/default/%s.jpeg", numberString)
+	return fmt.Sprintf(httpUrl+"/default/%s.jpeg", numberString)
 }

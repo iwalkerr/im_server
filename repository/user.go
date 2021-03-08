@@ -61,7 +61,7 @@ func UploadImage(userId int, imgPath string) error {
 // 获取个人信息
 func GetUserInfo(uid int) *models.UserInfo {
 	var res models.UserInfo
-	err := db.Conn().QueryRowx(`SELECT name,realname,user_addr,sex,email FROM im_users WHERE user_id=?`, uid).StructScan(&res)
+	err := db.Conn().QueryRowx(`SELECT name,realname real_name,user_addr,sex,email FROM im_users WHERE user_id=?`, uid).StructScan(&res)
 	if err != nil && err != sql.ErrNoRows {
 		return nil
 	}

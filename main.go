@@ -8,7 +8,6 @@
 package main
 
 import (
-	"embed"
 	"fmt"
 	"imserver/lib/redislib"
 	"imserver/routers"
@@ -25,8 +24,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-//go:embed assets/default/*
-var assets embed.FS
+// go:embed assets/default/*
+// var assets embed.FS
 
 // go build -ldflags "-s -w" main.go
 // nohup ./main > /dev/null 2>&1 &
@@ -40,8 +39,8 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
-	staticPrefix := viper.GetString("app.staticPrefix")
-	router.StaticFS(staticPrefix, http.FS(assets))
+	// staticPrefix := viper.GetString("app.staticPrefix")
+	// router.StaticFS(staticPrefix, http.FS(assets))
 	// 初始化路由
 	routers.Init(router)
 	routers.WebsocketInit()
