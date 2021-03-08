@@ -1,0 +1,528 @@
+definitions:
+  common.JsonResult:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      msg:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /authCode:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 发送手机验证码
+      parameters:
+      - default: "13881887710"
+        description: 手机号码
+        in: formData
+        name: mobile
+        required: true
+        type: string
+      - default: "1"
+        description: 发送类型:1登陆,2注册,3忘记密码
+        in: formData
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 发送手机验证码
+      tags:
+      - 手机验证码
+  /forgetPwd:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 忘记密码
+      parameters:
+      - default: "13881887710"
+        description: 手机号码
+        in: formData
+        name: mobile
+        required: true
+        type: string
+      - default: "123456"
+        description: 密码
+        in: formData
+        name: password
+        required: true
+        type: string
+      - default: "432343"
+        description: 短信验证码
+        in: formData
+        name: sms_code
+        required: true
+        type: string
+      - default: "1614479454"
+        description: 时间戳
+        in: formData
+        name: timestamp
+        required: true
+        type: string
+      - default: 5fae1a0e4156e1ad4e742f4b9b7c1416
+        description: 签名
+        in: formData
+        name: sign
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 忘记密码
+      tags:
+      - 用户登陆
+  /login:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 用户登陆
+      parameters:
+      - default: "13881887710"
+        description: 手机号码
+        in: formData
+        name: mobile
+        required: true
+        type: string
+      - default: "123456"
+        description: 密码
+        in: formData
+        name: password
+        required: true
+        type: string
+      - default: "432343"
+        description: 短信验证码
+        in: formData
+        name: sms_code
+        required: true
+        type: string
+      - default: "1614479454"
+        description: 时间戳
+        in: formData
+        name: timestamp
+        required: true
+        type: string
+      - default: 5fae1a0e4156e1ad4e742f4b9b7c1416
+        description: 签名
+        in: formData
+        name: sign
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 用户登陆
+      tags:
+      - 用户登陆
+  /register:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 用户注册
+      parameters:
+      - default: "13881887710"
+        description: 手机号码
+        in: formData
+        name: mobile
+        required: true
+        type: string
+      - default: "123456"
+        description: 密码
+        in: formData
+        name: password
+        required: true
+        type: string
+      - default: "432343"
+        description: 短信验证码
+        in: formData
+        name: sms_code
+        required: true
+        type: string
+      - default: 张三
+        description: 用户名
+        in: formData
+        name: name
+        required: true
+        type: string
+      - default: "1"
+        description: 性别:1男,2女
+        in: formData
+        name: sex
+        required: true
+        type: string
+      - default: "1614479454"
+        description: 时间戳
+        in: formData
+        name: timestamp
+        required: true
+        type: string
+      - default: 5fae1a0e4156e1ad4e742f4b9b7c1416
+        description: 签名
+        in: formData
+        name: sign
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 用户注册
+      tags:
+      - 用户登陆
+  /user/addAddr:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 添加收货地址
+      parameters:
+      - default: eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYxNzA5MzgxNCwiaXNzIjoid2ViX2dpbl90ZW1wbGF0ZSIsIlJlZnJlc2hUaW1lIjoxNjE1Nzk3ODE0fQ.LmTyXCemtbMu7rGcxQtefEdU04RdVbp9hk2_6ulW8retAULYhVa5zvRBl8IXoFEm
+        description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      - default: 张三
+        description: 姓名
+        in: formData
+        name: name
+        required: true
+        type: string
+      - default: "13881887710"
+        description: 联系电话
+        in: formData
+        name: phone
+        required: true
+        type: string
+      - default: 四川/成都/温江区
+        description: 地址
+        in: formData
+        name: addr
+        required: true
+        type: string
+      - default: 南薰大道塞纳湖畔7栋503
+        description: 详细地址
+        in: formData
+        name: detail
+        required: true
+        type: string
+      - default: 0
+        description: 是否默认，1默认
+        in: formData
+        name: is_default
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 添加收货地址
+      tags:
+      - 用户管理
+  /user/addrList:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 获取收货地址列表
+      parameters:
+      - default: eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYxNzA5MzgxNCwiaXNzIjoid2ViX2dpbl90ZW1wbGF0ZSIsIlJlZnJlc2hUaW1lIjoxNjE1Nzk3ODE0fQ.LmTyXCemtbMu7rGcxQtefEdU04RdVbp9hk2_6ulW8retAULYhVa5zvRBl8IXoFEm
+        description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 获取收货地址列表
+      tags:
+      - 用户管理
+  /user/bandingAlipay:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 绑定alipay
+      parameters:
+      - default: eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYxNzA5MzgxNCwiaXNzIjoid2ViX2dpbl90ZW1wbGF0ZSIsIlJlZnJlc2hUaW1lIjoxNjE1Nzk3ODE0fQ.LmTyXCemtbMu7rGcxQtefEdU04RdVbp9hk2_6ulW8retAULYhVa5zvRBl8IXoFEm
+        description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      - default: 张三
+        description: 用户名
+        in: formData
+        name: name
+        required: true
+        type: string
+      - default: 320553500@qq.com
+        description: 账号
+        in: formData
+        name: account
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 绑定alipay
+      tags:
+      - 用户管理
+  /user/editAddr:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 修改收货地址
+      parameters:
+      - default: eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYxNzA5MzgxNCwiaXNzIjoid2ViX2dpbl90ZW1wbGF0ZSIsIlJlZnJlc2hUaW1lIjoxNjE1Nzk3ODE0fQ.LmTyXCemtbMu7rGcxQtefEdU04RdVbp9hk2_6ulW8retAULYhVa5zvRBl8IXoFEm
+        description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      - default: "1"
+        description: 用户收货地址ID
+        in: formData
+        name: shop_addr_id
+        required: true
+        type: string
+      - default: 张三
+        description: 姓名
+        in: formData
+        name: name
+        required: true
+        type: string
+      - default: "13881887710"
+        description: 联系电话
+        in: formData
+        name: phone
+        required: true
+        type: string
+      - default: 四川/成都/温江区
+        description: 地址
+        in: formData
+        name: addr
+        required: true
+        type: string
+      - default: 南薰大道塞纳湖畔7栋503
+        description: 详细地址
+        in: formData
+        name: detail
+        required: true
+        type: string
+      - default: 0
+        description: 是否默认，1默认
+        in: formData
+        name: is_default
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 修改收货地址
+      tags:
+      - 用户管理
+  /user/editPwd:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 修改用户密码
+      parameters:
+      - default: eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYxNzA5MzgxNCwiaXNzIjoid2ViX2dpbl90ZW1wbGF0ZSIsIlJlZnJlc2hUaW1lIjoxNjE1Nzk3ODE0fQ.LmTyXCemtbMu7rGcxQtefEdU04RdVbp9hk2_6ulW8retAULYhVa5zvRBl8IXoFEm
+        description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      - default: "123456"
+        description: 就密码
+        in: formData
+        name: old_pwd
+        required: true
+        type: string
+      - default: "3221"
+        description: 新密码
+        in: formData
+        name: new_pwd
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 修改用户密码
+      tags:
+      - 用户管理
+  /user/getAlipay:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 获取alipay
+      parameters:
+      - default: eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYxNzA5MzgxNCwiaXNzIjoid2ViX2dpbl90ZW1wbGF0ZSIsIlJlZnJlc2hUaW1lIjoxNjE1Nzk3ODE0fQ.LmTyXCemtbMu7rGcxQtefEdU04RdVbp9hk2_6ulW8retAULYhVa5zvRBl8IXoFEm
+        description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 获取alipay
+      tags:
+      - 用户管理
+  /user/headImg:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 更新用户头像
+      parameters:
+      - default: eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYxNzA5MzgxNCwiaXNzIjoid2ViX2dpbl90ZW1wbGF0ZSIsIlJlZnJlc2hUaW1lIjoxNjE1Nzk3ODE0fQ.LmTyXCemtbMu7rGcxQtefEdU04RdVbp9hk2_6ulW8retAULYhVa5zvRBl8IXoFEm
+        description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 用户头像
+        in: formData
+        name: img
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 更新用户头像
+      tags:
+      - 用户管理
+  /user/integral:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 用户积分
+      parameters:
+      - default: eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYxNzA5MzgxNCwiaXNzIjoid2ViX2dpbl90ZW1wbGF0ZSIsIlJlZnJlc2hUaW1lIjoxNjE1Nzk3ODE0fQ.LmTyXCemtbMu7rGcxQtefEdU04RdVbp9hk2_6ulW8retAULYhVa5zvRBl8IXoFEm
+        description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 用户积分
+      tags:
+      - 用户管理
+  /user/updateUser:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 更新用户信息
+      parameters:
+      - default: eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYxNzA5MzgxNCwiaXNzIjoid2ViX2dpbl90ZW1wbGF0ZSIsIlJlZnJlc2hUaW1lIjoxNjE1Nzk3ODE0fQ.LmTyXCemtbMu7rGcxQtefEdU04RdVbp9hk2_6ulW8retAULYhVa5zvRBl8IXoFEm
+        description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      - default: 张三
+        description: 昵称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - default: 1男/2女
+        description: 性别
+        in: formData
+        name: sex
+        type: string
+      - default: 320553500@qq.com
+        description: 邮箱
+        in: formData
+        name: email
+        type: string
+      - default: 四川省/成都市/成华区
+        description: 用户地址
+        in: formData
+        name: user_addr
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 更新用户信息
+      tags:
+      - 用户管理
+  /user/userInfo:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 获取用户信息
+      parameters:
+      - default: eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYxNzA5MzgxNCwiaXNzIjoid2ViX2dpbl90ZW1wbGF0ZSIsIlJlZnJlc2hUaW1lIjoxNjE1Nzk3ODE0fQ.LmTyXCemtbMu7rGcxQtefEdU04RdVbp9hk2_6ulW8retAULYhVa5zvRBl8IXoFEm
+        description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 获取用户信息
+      tags:
+      - 用户管理
+swagger: "2.0"

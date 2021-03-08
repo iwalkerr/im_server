@@ -1,0 +1,21 @@
+app:
+  logFile: log/gin.log
+  httpPort: 8080
+  webSocketPort: 8090
+  rpcPort: 9000
+  httpUrl: 192.168.10.7:8080 # im.zskj.com
+  webSocketUrl: 192.168.10.7:8080 #im.zskj.com
+  staticPrefix: /static
+
+mysql:
+  master: root:123456@tcp(127.0.0.1:3306)/gowebsocket?charset=utf8mb4&parseTime=true&loc=Local
+  slave: 
+
+redis:
+  addr: :6379
+  password: 123456
+  DB: 1
+  poolSize: 30
+  minIdleConns: 30
+
+
