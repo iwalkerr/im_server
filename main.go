@@ -28,6 +28,7 @@ import (
 // var assets embed.FS
 
 // go build -ldflags "-s -w" main.go
+// CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" main.go
 // nohup ./main > /dev/null 2>&1 &
 func main() {
 	initConfig()
