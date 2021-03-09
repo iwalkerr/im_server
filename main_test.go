@@ -14,12 +14,12 @@ import (
 func TestMain(t *testing.T) {
 	// qrcode.WriteFile("http://www.flysnow.org/", qrcode.High, 256, "./blog_qrcode.png")
 	//Boombuler
-	// dest2 := "qrcode2.png"
-	// content := "https://www.cnblogs.com/fanbi"
-	// size := 200
-	// CreateQRCodeByBoombuler(content, qr.M, size, dest2)
+	dest2 := "qrcode2.png"
+	content := "https://www.cnblogs.com/fanbi"
+	size := 200
+	CreateQRCodeByBoombuler(content, qr.M, size, dest2)
 
-	fmt.Println(ReadQRCode("qrcode2.png"))
+	// fmt.Println(ReadQRCode("qrcode2.png"))
 
 }
 

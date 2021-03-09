@@ -11,9 +11,6 @@ import (
 	"fmt"
 	"imserver/lib/redislib"
 	"imserver/routers"
-	"imserver/servers/grpcserver"
-	"imserver/servers/task"
-	"imserver/servers/websocket"
 	"io"
 	"net/http"
 	"os"
@@ -47,14 +44,14 @@ func main() {
 	routers.WebsocketInit()
 
 	// 定时任务
-	task.Init()
+	// task.Init()
 
 	// 服务注册
-	task.ServerInit()
+	// task.ServerInit()
 
-	go websocket.StartWebSocket()
+	// go websocket.StartWebSocket()
 	// grpc
-	go grpcserver.Init()
+	// go grpcserver.Init()
 
 	// go open()
 

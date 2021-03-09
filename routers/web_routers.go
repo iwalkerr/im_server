@@ -9,7 +9,6 @@ package routers
 
 import (
 	swag "imserver/controllers/swagger"
-	"imserver/controllers/systems"
 	"imserver/controllers/user"
 	"imserver/middleware"
 	"imserver/swagger"
@@ -41,25 +40,24 @@ func Init(router *gin.Engine) {
 
 	// 用户组
 	userRouter := router.Group("/user")
-	userRouter.POST("/integral", user.UserIntegral)       // 获取积分
-	userRouter.POST("/headImg", user.UpdateHeadImg)       // 更新头像
-	userRouter.POST("/userInfo", user.GetUserInfo)        // 获取用户信息
-	userRouter.POST("/updateUser", user.UpdateUserInfo)   // 更新用户信息
-	userRouter.POST("/friend", user.AddFriend)            // 添加朋友
-	userRouter.POST("/editPwd", user.EditUserPwd)         // 修改用户密码
-	userRouter.POST("/bandingAlipay", user.BandingAlipay) // 绑定alipay
-	userRouter.POST("/getAlipay", user.GetAlipayInfo)     // 获取alipay信息
-	userRouter.POST("/addAddr", user.AddShopAddr)         // 添加购物地址
-	userRouter.POST("/editAddr", user.EditShopAddr)       // 修改购物地址
-	userRouter.POST("/addrList", user.ShopAddrList)       // 购物地址列表
-	userRouter.GET("/list", user.List)
-	userRouter.GET("/online", user.Online)
-	userRouter.POST("/sendMessage", user.SendMessage)
-	userRouter.POST("/sendMessageAll", user.SendMessageAll)
+	userRouter.POST("/integral", user.UserIntegral)         // 获取积分
+	userRouter.POST("/headImg", user.UpdateHeadImg)         // 更新头像
+	userRouter.POST("/userInfo", user.GetUserInfo)          // 获取用户信息
+	userRouter.POST("/updateUser", user.UpdateUserInfo)     // 更新用户信息
+	userRouter.POST("/friend", user.AddFriend)              // 添加朋友
+	userRouter.POST("/editPwd", user.EditUserPwd)           // 修改用户密码
+	userRouter.POST("/bandingAlipay", user.BandingAlipay)   // 绑定alipay
+	userRouter.POST("/getAlipay", user.GetAlipayInfo)       // 获取alipay信息
+	userRouter.POST("/addAddr", user.AddShopAddr)           // 添加购物地址
+	userRouter.POST("/editAddr", user.EditShopAddr)         // 修改购物地址
+	userRouter.POST("/deleteAddr", user.DeleteAddr)         // 删除购物地址
+	userRouter.POST("/addrList", user.ShopAddrList)         // 购物地址列表
+	userRouter.POST("/allTeam", user.GetAllTeam)            // 获取所有群
+	userRouter.POST("/sendMessageAll", user.SendMessageAll) // 群聊
 
 	// 系统
-	systemRouter := router.Group("/system")
-	systemRouter.GET("/state", systems.Status)
+	// systemRouter := router.Group("/system")
+	// systemRouter.GET("/state", systems.Status)
 
 	// home
 	// homeRouter := router.Group("/home")

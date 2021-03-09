@@ -6,6 +6,27 @@ import (
 	"imserver/models"
 )
 
+type TeamInfo struct {
+	TeamId      int    `db:"team_id"`      // 群ID
+	Name        string `db:"name"`         // 群昵称
+	IsAccept    int    `db:"is_accept"`    // 是否接收消息
+	HeadPicture string `db:"head_picture"` // 群头像
+	LastChatId  int    `db:"last_chat_id"` // 消息ID
+}
+
+// 获取用户ID获取所有群
+func GetAllTeamByUid(uid int) (list []TeamInfo) {
+	_ = db.Conn().Select(&list, `SELECT t.team_id,t.name,t.is_accept,t.head_picture,m.last_chat_id FROM im_team_member m 
+	LEFT JOIN im_teams t on m.team_id=t.team_id
+	WHERE m.user_id=? and m.status=1`, uid)
+	return
+}
+
+func DeleteShopAddr(uid int, shopAddrId string) error {
+	_, err := db.Conn().Exec(`delete from im_user_addr where shop_addr_id=? and user_id=?`, shopAddrId, uid)
+	return err
+}
+
 // 取消所有默认的地址
 func CancelDefaultAddr(uid int) error {
 	_, err := db.Conn().Exec(`update im_user_addr set is_default=0 where user_id=?`, uid)

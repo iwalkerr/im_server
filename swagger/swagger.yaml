@@ -297,6 +297,34 @@ paths:
       summary: 绑定alipay
       tags:
       - 用户管理
+  /user/deleteAddr:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 删除收货地址
+      parameters:
+      - default: eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYxNzA5MzgxNCwiaXNzIjoid2ViX2dpbl90ZW1wbGF0ZSIsIlJlZnJlc2hUaW1lIjoxNjE1Nzk3ODE0fQ.LmTyXCemtbMu7rGcxQtefEdU04RdVbp9hk2_6ulW8retAULYhVa5zvRBl8IXoFEm
+        description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      - default: "1"
+        description: 用户收货地址ID
+        in: formData
+        name: shop_addr_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.JsonResult'
+      summary: 删除收货地址
+      tags:
+      - 用户管理
   /user/editAddr:
     post:
       consumes:

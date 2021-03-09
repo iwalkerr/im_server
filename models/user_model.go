@@ -78,7 +78,7 @@ type UserOnline struct {
 	AccIp         string `json:"accIp"`         // acc Ip
 	AccPort       string `json:"accPort"`       // acc 端口
 	AppId         uint32 `json:"appId"`         // appId
-	UserId        string `json:"userId"`        // 用户Id
+	UserId        int    `json:"userId"`        // 用户Id
 	ClientIp      string `json:"clientIp"`      // 客户端Ip
 	ClientPort    string `json:"clientPort"`    // 客户端端口
 	LoginTime     uint64 `json:"loginTime"`     // 用户上次登录时间
@@ -92,12 +92,12 @@ type UserOnline struct {
 /**********************  数据处理  *********************************/
 
 // 用户登录
-func UserLogin(accIp, accPort string, appId uint32, userId string, addr string, loginTime uint64) (userOnline *UserOnline) {
+func UserLogin(accIp, accPort string, teamId uint32, userId int, addr string, loginTime uint64) (userOnline *UserOnline) {
 
 	userOnline = &UserOnline{
 		AccIp:         accIp,
 		AccPort:       accPort,
-		AppId:         appId,
+		AppId:         teamId,
 		UserId:        userId,
 		ClientIp:      addr,
 		LoginTime:     loginTime,

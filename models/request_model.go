@@ -19,7 +19,7 @@ type Request struct {
 type Login struct {
 	ServiceToken string `json:"serviceToken"` // 验证用户是否登录
 	AppId        uint32 `json:"appId,omitempty"`
-	UserId       string `json:"userId,omitempty"`
+	UserId       int    `json:"userId,omitempty"`
 }
 
 // 心跳请求数据

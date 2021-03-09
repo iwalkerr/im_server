@@ -17,7 +17,6 @@ import (
 	"imserver/lib/redislib"
 	"imserver/models"
 	"imserver/repository"
-	"imserver/servers/websocket"
 	"os"
 	"path"
 	"strconv"
@@ -46,6 +45,37 @@ func GetCode(key string) string {
 // 添加朋友
 func AddFriend(c *gin.Context) {
 
+}
+
+// 获取所有群和单人聊天信息
+func GetAllTeam(c *gin.Context) {
+	uid := c.GetInt("uid")
+	list := repository.GetAllTeamByUid(uid)
+	c.JSON(200, common.Response(common.OK, "", list))
+}
+
+// @Tags 用户管理
+// @Title 删除收货地址
+// @Summary 删除收货地址
+// @Description 删除收货地址
+// @Accept multipart/form-data
+// @Produce json
+// @Param token header string true "用户token" default(eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYxNzA5MzgxNCwiaXNzIjoid2ViX2dpbl90ZW1wbGF0ZSIsIlJlZnJlc2hUaW1lIjoxNjE1Nzk3ODE0fQ.LmTyXCemtbMu7rGcxQtefEdU04RdVbp9hk2_6ulW8retAULYhVa5zvRBl8IXoFEm)
+// @Param shop_addr_id formData string true "用户收货地址ID" default(1)
+// @Success 200 {object} common.JsonResult
+// @Router /user/deleteAddr [post]
+func DeleteAddr(c *gin.Context) {
+	shopAddrId := c.PostForm("shop_addr_id")
+	if shopAddrId == "" || shopAddrId == "0" {
+		c.JSON(200, common.Response(common.ParameterIllegal, "", nil))
+		return
+	}
+	uid := c.GetInt("uid")
+	if err := repository.DeleteShopAddr(uid, shopAddrId); err != nil {
+		c.JSON(200, common.Response(common.ServerError, "", nil))
+		return
+	}
+	c.JSON(200, common.Response(common.OK, "", nil))
 }
 
 // 添加收货地址
@@ -215,9 +245,9 @@ func EditUserPwd(c *gin.Context) {
 		return
 	}
 
-	pwd := resp.Mobile + resp.Password + resp.Signature
+	pwd := resp.Mobile + req.OldPwd + resp.Signature
 	pwd = helper.MD5(pwd)
-	if req.OldPwd != pwd {
+	if resp.Password != pwd {
 		c.JSON(200, common.Response(common.OldPwdError, "", nil))
 		return
 	}
@@ -698,103 +728,47 @@ func ForgetPwd(c *gin.Context) {
 	c.JSON(200, common.Response(common.OK, "", nil))
 }
 
-// 查看全部在线用户
-func List(c *gin.Context) {
-	appIdStr := c.Query("appId")
-	appIdUint64, _ := strconv.ParseInt(appIdStr, 10, 32)
-	appId := uint32(appIdUint64)
-
-	fmt.Println("http_request 查看全部在线用户", appId)
-
-	data := make(map[string]interface{})
-
-	userList := websocket.UserList(appId)
-	data["userList"] = userList
-	data["userCount"] = len(userList)
-
-	controllers.Response(c, common.OK, "", data)
-}
-
-// 查看用户是否在线
-func Online(c *gin.Context) {
-
-	userId := c.Query("userId")
-	appIdStr := c.Query("appId")
-	appIdUint64, _ := strconv.ParseInt(appIdStr, 10, 32)
-	appId := uint32(appIdUint64)
-
-	fmt.Println("http_request 查看用户是否在线", userId, appIdStr)
-
-	data := make(map[string]interface{})
-
-	online := websocket.CheckUserOnline(appId, userId)
-	data["userId"] = userId
-	data["online"] = online
-
-	controllers.Response(c, common.OK, "", data)
-}
-
-// 给用户发送消息
-func SendMessage(c *gin.Context) {
-	// 获取参数
-	appIdStr := c.PostForm("appId")
-	userId := c.PostForm("userId")
-	msgId := c.PostForm("msgId")
-	message := c.PostForm("message")
-	appIdUint64, _ := strconv.ParseInt(appIdStr, 10, 32)
-	appId := uint32(appIdUint64)
-
-	fmt.Println("http_request 给用户发送消息", appIdStr, userId, msgId, message)
-
-	// TODO::进行用户权限认证，一般是客户端传入TOKEN，然后检验TOKEN是否合法，通过TOKEN解析出来用户ID
-	// 本项目只是演示，所以直接过去客户端传入的用户ID(userId)
-
-	data := make(map[string]interface{})
-
-	if cache.SeqDuplicates(msgId) {
-		fmt.Println("给用户发送消息 重复提交:", msgId)
-		controllers.Response(c, common.OK, "", data)
-
-		return
-	}
-
-	sendResults, err := websocket.SendUserMessage(appId, userId, msgId, message)
-	if err != nil {
-		data["sendResultsErr"] = err.Error()
-	}
-
-	data["sendResults"] = sendResults
-
-	controllers.Response(c, common.OK, "", data)
+type SendMessageData struct {
+	TeamId  uint32 `json:"team_id" binding:"required"`
+	MsgType int    `json:"msg_type" binding:"required"`
+	Message string `json:"message" binding:"required"`
 }
 
 // 给全员发送消息
 func SendMessageAll(c *gin.Context) {
 	// 获取参数
-	appIdStr := c.PostForm("appId")
-	userId := c.PostForm("userId")
-	msgId := c.PostForm("msgId")
-	message := c.PostForm("message")
-	appIdUint64, _ := strconv.ParseInt(appIdStr, 10, 32)
-	appId := uint32(appIdUint64)
-
-	fmt.Println("http_request 给全体用户发送消息", appIdStr, userId, msgId, message)
-
-	data := make(map[string]interface{})
-	if cache.SeqDuplicates(msgId) {
-		fmt.Println("给用户发送消息 重复提交:", msgId)
-		controllers.Response(c, common.OK, "", data)
-
+	var req SendMessageData
+	if err := c.ShouldBind(&req); err != nil {
+		c.JSON(200, common.Response(common.ParameterIllegal, "", nil))
 		return
 	}
+	userId := c.GetInt("uid")
 
-	sendResults, err := websocket.SendUserMessageAll(appId, userId, msgId, models.MessageCmdMsg, message)
-	if err != nil {
-		data["sendResultsErr"] = err.Error()
+	// teamId := c.PostForm("teamId")
+	// message := c.PostForm("message")
+	// msgType := c.PostForm("msgType")
 
-	}
+	// userId := c.PostForm("userId")
+	// teamId64, _ := strconv.ParseInt(teamId, 10, 32)
+	// appId := uint32(teamId64)
 
-	data["sendResults"] = sendResults
+	// fmt.Println("http_request 给全体用户发送消息", appIdStr, userId, msgId, message)
+
+	data := make(map[string]interface{})
+	// if cache.SeqDuplicates(msgId) {
+	// 	fmt.Println("给用户发送消息 重复提交:", msgId)
+	// 	controllers.Response(c, common.OK, "", data)
+
+	// 	return
+	// }
+	fmt.Println(userId)
+
+	// sendResults, err := websocket.SendUserMessageAll(req.TeamId, userId, req.MsgType, models.MessageCmdMsg, req.Message)
+	// if err != nil {
+	// 	data["sendResultsErr"] = err.Error()
+	// }
+
+	// data["sendResults"] = sendResults
 
 	controllers.Response(c, common.OK, "", data)
 }
