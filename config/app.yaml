@@ -3,8 +3,8 @@ app:
   httpPort: 8080
   webSocketPort: 8090
   rpcPort: 9000
-  httpUrl: 192.168.10.7:8080 # im.zskj.com
-  webSocketUrl: 192.168.10.7:8080 #im.zskj.com
+  httpUrl: 192.168.10.11:8080 # im.zskj.com
+  webSocketUrl: 192.168.10.11:8080 #im.zskj.com
 
 mysql:
   master: root:123456@tcp(127.0.0.1:3306)/gowebsocket?charset=utf8mb4&parseTime=true&loc=Local

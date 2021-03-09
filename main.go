@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"imserver/lib/redislib"
 	"imserver/routers"
+	"imserver/servers/task"
 	"io"
 	"net/http"
 	"os"
@@ -44,7 +45,7 @@ func main() {
 	routers.WebsocketInit()
 
 	// 定时任务
-	// task.Init()
+	task.Init()
 
 	// 服务注册
 	// task.ServerInit()

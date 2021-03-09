@@ -17,8 +17,6 @@ import (
 )
 
 func Init(router *gin.Engine) {
-	// router.LoadHTMLGlob("views/**/*")
-
 	router.GET("/tool/swagger", swag.Swagger)
 	swagger.Init(router) // 初始化文档
 

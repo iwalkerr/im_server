@@ -743,15 +743,6 @@ func SendMessageAll(c *gin.Context) {
 		return
 	}
 	userId := c.GetInt("uid")
-
-	// teamId := c.PostForm("teamId")
-	// message := c.PostForm("message")
-	// msgType := c.PostForm("msgType")
-
-	// userId := c.PostForm("userId")
-	// teamId64, _ := strconv.ParseInt(teamId, 10, 32)
-	// appId := uint32(teamId64)
-
 	// fmt.Println("http_request 给全体用户发送消息", appIdStr, userId, msgId, message)
 
 	data := make(map[string]interface{})
