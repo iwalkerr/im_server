@@ -12,6 +12,7 @@ import (
 	"imserver/lib/redislib"
 	"imserver/routers"
 	"imserver/servers/task"
+	"imserver/servers/websocket"
 	"io"
 	"net/http"
 	"os"
@@ -44,13 +45,13 @@ func main() {
 	routers.Init(router)
 	routers.WebsocketInit()
 
-	// 定时任务
+	// 定时任务,清理连接
 	task.Init()
 
 	// 服务注册
-	// task.ServerInit()
+	task.ServerInit()
 
-	// go websocket.StartWebSocket()
+	go websocket.StartWebSocket()
 	// grpc
 	// go grpcserver.Init()
 

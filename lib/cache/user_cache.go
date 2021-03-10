@@ -61,21 +61,18 @@ func GetUserOnlineInfo(userKey string) (userOnline *models.UserOnline, err error
 
 // 设置用户在线数据
 func SetUserOnlineInfo(userKey string, userOnline *models.UserOnline) (err error) {
-
 	redisClient := redislib.GetClient()
 	key := getUserOnlineKey(userKey)
 
 	valueByte, err := json.Marshal(userOnline)
 	if err != nil {
 		fmt.Println("设置用户在线数据 json Marshal", key, err)
-
 		return
 	}
 
 	_, err = redisClient.Do("setEx", key, userOnlineCacheTime, string(valueByte)).Result()
 	if err != nil {
 		fmt.Println("设置用户在线数据 ", key, err)
-
 		return
 	}
 

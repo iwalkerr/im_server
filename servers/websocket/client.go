@@ -21,7 +21,7 @@ const (
 
 // 用户登录
 type login struct {
-	TeamId uint32
+	TeamId int
 	UserId int
 	Client *Client
 }
@@ -38,11 +38,12 @@ type Client struct {
 	Addr          string          // 客户端地址
 	Socket        *websocket.Conn // 用户连接
 	Send          chan []byte     // 待发送的数据
-	TeamId        uint32          // 群ID
-	UserId        int             // 用户Id，用户登录以后才有
-	FirstTime     uint64          // 首次连接事件
+	FirstTime     uint64          // 首次连接时间
 	HeartbeatTime uint64          // 用户上次心跳时间
-	LoginTime     uint64          // 登录时间 登录以后才有
+
+	UserId    int    // 用户Id，用户登录以后才有
+	TeamId    int    // 群ID,进群后，才有群ID
+	LoginTime uint64 // 登录时间 登录以后才有
 }
 
 // 初始化
@@ -117,16 +118,14 @@ func (c *Client) write() {
 				return
 			}
 
-			c.Socket.WriteMessage(websocket.TextMessage, message)
+			_ = c.Socket.WriteMessage(websocket.TextMessage, message)
 		}
 	}
 }
 
 // 读取客户端数据
 func (c *Client) SendMsg(msg []byte) {
-
 	if c == nil {
-
 		return
 	}
 
@@ -145,10 +144,11 @@ func (c *Client) close() {
 }
 
 // 用户登录
-func (c *Client) Login(teamId uint32, userId int, loginTime uint64) {
+func (c *Client) Login(teamId, userId int, loginTime uint64) {
 	c.TeamId = teamId
 	c.UserId = userId
 	c.LoginTime = loginTime
+
 	// 登录成功=心跳一次
 	c.Heartbeat(loginTime)
 }
@@ -156,28 +156,15 @@ func (c *Client) Login(teamId uint32, userId int, loginTime uint64) {
 // 用户心跳
 func (c *Client) Heartbeat(currentTime uint64) {
 	c.HeartbeatTime = currentTime
-
-	return
 }
 
 // 心跳超时
 func (c *Client) IsHeartbeatTimeout(currentTime uint64) (timeout bool) {
-	if c.HeartbeatTime+heartbeatExpirationTime <= currentTime {
-		timeout = true
-	}
-
-	return
+	return c.HeartbeatTime+heartbeatExpirationTime <= currentTime
 }
 
 // 是否登录了
 func (c *Client) IsLogin() (isLogin bool) {
-
 	// 用户登录了
-	if c.UserId != 0 {
-		isLogin = true
-
-		return
-	}
-
-	return
+	return c.UserId != 0
 }

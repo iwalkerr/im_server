@@ -9,63 +9,56 @@ package models
 
 import "imserver/common"
 
-const (
-	// MessageTypeText  = "text"  // 文字
-	// MessageTypeImg   = "img"   // 相片
-	// MessageTypeVideo = "video" // 视频
-	// MessageTypeVoice = "voice" // 语音
+// import "imserver/common"
 
-	MessageCmdMsg   = "msg"
-	MessageCmdEnter = "enter"
-	MessageCmdExit  = "exit"
+const (
+	MessageCmdMsg     = "msg"
+	MessageCmdEnter   = "enter"   // 连接
+	MessageCmdExit    = "exit"    // 断开
+	MessageCmdLogin   = "login"   // 进群
+	MessageCmdUnLogin = "unlogin" // 离群
 )
 
 // 消息的定义
 type Message struct {
-	// Target string `json:"target"` // 目标
-	Type int    `json:"type"` // 消息类型 1 text/2 img/3 video/4 voice
-	Msg  string `json:"msg"`  // 消息内容
-	From int    `json:"from"` // 发送者
+	Type  int    `json:"type"` // 消息类型 1 text/2 img/3 video/4 voice
+	Msg   string `json:"msg"`  // 消息内容
+	From  int    `json:"from"` // 发送者
+	MsgId int    `json:"msgId"`
 }
 
-func NewTestMsg(from, msgType int, Msg string) (message *Message) {
-
+func NewTestMsg(msgType, msgId int, Msg string) (message *Message) {
 	message = &Message{
 		Type: msgType,
-		From: from,
-		Msg:  Msg,
+		// From:  from,
+		Msg:   Msg,
+		MsgId: msgId,
 	}
 
 	return
 }
 
-func getTextMsgData(uuId, msgId, msgType int, cmd, message string) string {
-	textMsg := NewTestMsg(uuId, msgType, message)
-	head := NewResponseHead(msgId, cmd, common.OK, "Ok", textMsg)
+func getTextMsgData(msgId, msgType int, cmd, message string) string {
+	textMsg := NewTestMsg(msgType, msgId, message)
+	head := NewResponseHead(cmd, common.OK, "Ok", textMsg)
 
 	return head.String()
 }
 
 // 文本消息
-func GetMsgData(uId, msgId, msgType int, cmd, message string) string {
+func GetMsgData(msgId, msgType int, cmd string, message string) string {
 
-	return getTextMsgData(uId, msgId, msgType, cmd, message)
+	return getTextMsgData(msgId, msgType, cmd, message)
 }
-
-// // 文本消息
-// func GetTextMsgData(uuId, msgId, message string) string {
-
-// 	return getTextMsgData("msg", uuId, msgId, message)
-// }
 
 // 用户进入消息
 func GetTextMsgDataEnter(uId, msgId int, message string) string {
 
-	return getTextMsgData(uId, msgId, 1, "enter", message)
+	return getTextMsgData(msgId, 1, "enter", message)
 }
 
 // 用户退出消息
 func GetTextMsgDataExit(uId, msgId int, message string) string {
 
-	return getTextMsgData(uId, msgId, 1, "exit", message)
+	return getTextMsgData(msgId, 1, "exit", message)
 }

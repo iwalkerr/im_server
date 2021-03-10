@@ -15,7 +15,7 @@ service AccServer {
 
 // 给这台机器的房间内所有用户发送消息
 message SendMsgAllReq {
-    string seq = 1; // 序列号
+    uint32 seq = 1; // 序列号
     uint32 teamId = 2; // teamId 群Id
     uint32 userId = 3; // 发送的用户ID
     string cms = 4; // cms 动作: msg/enter/exit

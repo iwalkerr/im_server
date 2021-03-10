@@ -18,10 +18,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-const (
-// defaultAppId = 101 // 默认平台Id,app聊天
-)
-
 var (
 	clientManager = NewClientManager() // 管理者
 
@@ -36,35 +32,11 @@ func GetServer() (server *models.Server) {
 }
 
 func IsLocal(server *models.Server) (isLocal bool) {
-	if server.Ip == serverIp && server.Port == serverPort {
-		isLocal = true
-	}
-
-	return
+	return server.Ip == serverIp && server.Port == serverPort
 }
-
-// func InAppIds(appId uint32) (inAppId bool) {
-
-// 	for _, value := range appIds {
-// 		if value == appId {
-// 			inAppId = true
-
-// 			return
-// 		}
-// 	}
-
-// 	return
-// }
-
-// func GetDefaultAppId() (appId uint32) {
-// 	appId = defaultAppId
-
-// 	return
-// }
 
 // 启动程序
 func StartWebSocket() {
-
 	serverIp = helper.GetServerIp()
 
 	webSocketPort := viper.GetString("app.webSocketPort")
@@ -82,7 +54,6 @@ func StartWebSocket() {
 }
 
 func wsPage(w http.ResponseWriter, req *http.Request) {
-
 	// 升级协议
 	conn, err := (&websocket.Upgrader{CheckOrigin: func(r *http.Request) bool {
 		fmt.Println("升级协议", "ua:", r.Header["User-Agent"], "referer:", r.Header["Referer"])
@@ -91,7 +62,6 @@ func wsPage(w http.ResponseWriter, req *http.Request) {
 	}}).Upgrade(w, req, nil)
 	if err != nil {
 		http.NotFound(w, req)
-
 		return
 	}
 

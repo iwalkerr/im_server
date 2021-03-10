@@ -36,7 +36,6 @@ func (s *Server) String() (str string) {
 func StringToServer(str string) (server *Server, err error) {
 	list := strings.Split(str, ":")
 	if len(list) != 2 {
-
 		return nil, errors.New("err")
 	}
 

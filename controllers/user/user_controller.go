@@ -17,6 +17,7 @@ import (
 	"imserver/lib/redislib"
 	"imserver/models"
 	"imserver/repository"
+	"imserver/servers/websocket"
 	"os"
 	"path"
 	"strconv"
@@ -729,8 +730,8 @@ func ForgetPwd(c *gin.Context) {
 }
 
 type SendMessageData struct {
-	TeamId  uint32 `json:"team_id" binding:"required"`
-	MsgType int    `json:"msg_type" binding:"required"`
+	TeamId  int    `json:"teamId" binding:"required"`
+	MsgType int    `json:"msgType" binding:"required"`
 	Message string `json:"message" binding:"required"`
 }
 
@@ -749,17 +750,15 @@ func SendMessageAll(c *gin.Context) {
 	// if cache.SeqDuplicates(msgId) {
 	// 	fmt.Println("给用户发送消息 重复提交:", msgId)
 	// 	controllers.Response(c, common.OK, "", data)
-
 	// 	return
 	// }
-	fmt.Println(userId)
 
-	// sendResults, err := websocket.SendUserMessageAll(req.TeamId, userId, req.MsgType, models.MessageCmdMsg, req.Message)
-	// if err != nil {
-	// 	data["sendResultsErr"] = err.Error()
-	// }
+	sendResults, err := websocket.SendUserMessageAll(req.TeamId, userId, req.MsgType, models.MessageCmdMsg, req.Message)
+	if err != nil {
+		data["sendResultsErr"] = err.Error()
+	}
 
-	// data["sendResults"] = sendResults
+	data["sendResults"] = sendResults
 
 	controllers.Response(c, common.OK, "", data)
 }
